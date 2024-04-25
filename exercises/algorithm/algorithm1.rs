@@ -85,14 +85,14 @@ where
             None => None,
             Some(next_ptr) => {
                 let next_node = unsafe { (*next_ptr.as_ptr()).next };
-                let next_node_ptr = self.splice(next_node);
                 match self.end {
                     None => self.start = node,
                     Some(end_ptr) => unsafe { (*end_ptr.as_ptr()).next = node },
                 }
                 self.end = node;
-                unsafe { (*next_ptr.as_ptr()).next = next_node_ptr }
-                node
+                unsafe { (*next_ptr.as_ptr()).next = None };
+                self.length += 1;
+                next_node
             }
         }
     }
